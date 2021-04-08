@@ -160,6 +160,7 @@
     <ClInclude Include="header\sniffer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include=".git\config" />
     <None Include="website\server.js" />
     <None Include="website\src\App.vue" />
     <None Include="website\src\components\History.vue" />

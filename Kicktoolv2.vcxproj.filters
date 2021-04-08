@@ -65,5 +65,6 @@
     <None Include="website\src\main.js">
       <Filter>website\src</Filter>
     </None>
+    <None Include=".git\config" />
   </ItemGroup>
 </Project>
