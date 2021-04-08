@@ -12,13 +12,10 @@
       <UniqueIdentifier>{2e7c0d7c-8227-4821-b560-312ac6f2f97e}</UniqueIdentifier>
     </Filter>
     <Filter Include="website">
-      <UniqueIdentifier>{61778c78-dbc5-4de0-913c-f581db2a2bb6}</UniqueIdentifier>
+      <UniqueIdentifier>{ba0758a9-b935-427a-8e26-ee59ecc20d18}</UniqueIdentifier>
     </Filter>
     <Filter Include="website\src">
-      <UniqueIdentifier>{f87b7ff5-4868-4afa-834c-4640f3b7923f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="website\src\components">
-      <UniqueIdentifier>{740e0c08-ce97-462e-a6e8-f7b3424e6987}</UniqueIdentifier>
+      <UniqueIdentifier>{69ca200d-8ae6-4a82-b18f-3491a819b156}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,29 +39,5 @@
     <ClInclude Include="header\Player.h">
       <Filter>header</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="website\server.js">
-      <Filter>website</Filter>
-    </None>
-    <None Include="website\src\components\History.vue">
-      <Filter>website\src\components</Filter>
-    </None>
-    <None Include="website\src\components\Prison.vue">
-      <Filter>website\src\components</Filter>
-    </None>
-    <None Include="website\src\components\Session.vue">
-      <Filter>website\src\components</Filter>
-    </None>
-    <None Include="website\src\components\Toolbar.vue">
-      <Filter>website\src\components</Filter>
-    </None>
-    <None Include="website\src\App.vue">
-      <Filter>website\src</Filter>
-    </None>
-    <None Include="website\src\main.js">
-      <Filter>website\src</Filter>
-    </None>
-    <None Include=".git\config" />
   </ItemGroup>
 </Project>

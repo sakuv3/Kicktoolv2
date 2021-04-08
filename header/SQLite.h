@@ -62,10 +62,10 @@ private:
 
 public:
     SQLite() {
-        rc = sqlite3_open_v2("./ressources/players.db", &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
+        rc = sqlite3_open_v2("../website/players.db", &db, SQLITE_OPEN_CREATE | SQLITE_OPEN_READWRITE, NULL);
         checkDBErrors();
-        clearPlayers();
         createTables();
+        clearPlayers();
     }
 
     int createTables() {

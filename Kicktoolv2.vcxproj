@@ -130,7 +130,7 @@
       <AdditionalDependencies>C:\Program Files\PcapPlusPlus-20.08\Dist\x64\Debug\Common++.lib;C:\Program Files\PcapPlusPlus-20.08\Dist\x64\Debug\Packet++.lib;C:\Program Files\PcapPlusPlus-20.08\Dist\x64\Debug\Pcap++.lib;winsqlite3.lib;iphlpapi.lib;Ws2_32.lib;wpcap.lib;Packet.lib;pthreadVC2.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy "C:\Program Files\Pthreads\Pre-built.2\dll\x64\pthreadVC2.dll" "C:\Repos\Kicktoolv2\" /Y</Command>
+      <Command>xcopy "C:\Program Files\Pthreads\Pre-built.2\dll\x64\pthreadVC2.dll" "C:\Repos\Kicktoolv2\Bin\" /Y</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -158,16 +158,6 @@
     <ClInclude Include="header\Player.h" />
     <ClInclude Include="header\SQLite.h" />
     <ClInclude Include="header\sniffer.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include=".git\config" />
-    <None Include="website\server.js" />
-    <None Include="website\src\App.vue" />
-    <None Include="website\src\components\History.vue" />
-    <None Include="website\src\components\Prison.vue" />
-    <None Include="website\src\components\Session.vue" />
-    <None Include="website\src\components\Toolbar.vue" />
-    <None Include="website\src\main.js" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
