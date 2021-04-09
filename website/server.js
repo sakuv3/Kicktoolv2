@@ -7,7 +7,8 @@ const cors = require("cors");
 var sqlite3 = require('sqlite3').verbose();
 const DBSOURCE = "players.db"
 // Server port
-var HTTP_PORT = 8000
+var HTTP_PORT = 8000 
+const cmd = require('windosu') // executing cmds
 
 let db = new sqlite3.Database(DBSOURCE, (err) => {
     if (err) {
@@ -106,8 +107,11 @@ app.post('/api/history/', (req, res) => {
         });
 })
 
-// delets player with given ip
+// delets player with given ip and blocks his ip
 app.delete('/api/players/:ip/', (req, res) => {
+    const ip = req.params.ip
+    const str = 'route add ' + ip + ' mask 255.255.255.255 1.3.3.7 if 1'
+    cmd.exec(str)
     db.run(
         'DELETE FROM players WHERE ip =(?)', req.params.ip,
         function (err, result) {
@@ -132,8 +136,11 @@ app.delete('/api/history/:ip/', (req, res) => {
         });
 })
 
-// delets prisoneer with given ip
+// frees prisoneer with given ip and unblocks his ip
 app.delete('/api/prison/:ip/', (req, res) => {
+    const ip = req.params.ip
+    const str = 'route delete ' + ip + ' mask 255.255.255.255 1.3.3.7 if 1'
+    cmd.exec(str)
     db.run(
         'DELETE FROM prison WHERE ip =(?)', req.params.ip,
         function (err, result) {

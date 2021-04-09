@@ -159,6 +159,17 @@
     <ClInclude Include="header\SQLite.h" />
     <ClInclude Include="header\sniffer.h" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="website\package.json" />
+    <None Include="website\server.js" />
+    <None Include="website\src\App.vue" />
+    <None Include="website\src\components\History.vue" />
+    <None Include="website\src\components\Prison.vue" />
+    <None Include="website\src\components\Session.vue" />
+    <None Include="website\src\components\Toolbar.vue" />
+    <None Include="website\src\main.js" />
+    <None Include="website\vue.config.js" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

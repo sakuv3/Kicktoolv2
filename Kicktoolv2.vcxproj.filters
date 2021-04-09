@@ -17,6 +17,9 @@
     <Filter Include="website\src">
       <UniqueIdentifier>{69ca200d-8ae6-4a82-b18f-3491a819b156}</UniqueIdentifier>
     </Filter>
+    <Filter Include="website\src\components">
+      <UniqueIdentifier>{931c786e-6ebd-4435-adfe-7e9016b3ed1e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp">
@@ -39,5 +42,34 @@
     <ClInclude Include="header\Player.h">
       <Filter>header</Filter>
     </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="website\package.json">
+      <Filter>website</Filter>
+    </None>
+    <None Include="website\server.js">
+      <Filter>website</Filter>
+    </None>
+    <None Include="website\vue.config.js">
+      <Filter>website</Filter>
+    </None>
+    <None Include="website\src\App.vue">
+      <Filter>website\src</Filter>
+    </None>
+    <None Include="website\src\main.js">
+      <Filter>website\src</Filter>
+    </None>
+    <None Include="website\src\components\History.vue">
+      <Filter>website\src\components</Filter>
+    </None>
+    <None Include="website\src\components\Prison.vue">
+      <Filter>website\src\components</Filter>
+    </None>
+    <None Include="website\src\components\Session.vue">
+      <Filter>website\src\components</Filter>
+    </None>
+    <None Include="website\src\components\Toolbar.vue">
+      <Filter>website\src\components</Filter>
+    </None>
   </ItemGroup>
 </Project>
