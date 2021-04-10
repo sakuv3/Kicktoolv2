@@ -55,7 +55,7 @@
                 closeOnClick: false,
                 links: [
                     { icon: 'mdi-account-group', text: 'Session', route: '/session' },
-                    { icon: 'mdi-chart-timeline-variant-shimmer', text: 'History', route: '/history' },
+                   // { icon: 'mdi-chart-timeline-variant-shimmer', text: 'History', route: '/history' },
                     { icon: 'mdi-account-cancel', text: 'MW2 Prison', route: '/prison' },
                 ]
             };

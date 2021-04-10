@@ -74,7 +74,7 @@ public:
 					tempindex++;
 			}
 		}
-		print_players();
+		//print_players();
 	}
 
 	void push_player(char* name, int namelength, std::string ip)
