@@ -72,15 +72,12 @@
             }
         },
         created: function () {
-            /*setInterval(() => {
+            setInterval(() => {
                 this.updatez();
-            }, 500);
-            // ressource intensive 
-            */
+            }, 1000);
+            // refresh every second
         },
-        mounted() {
-            this.updatez()
-        },
+        
         
         methods: {
             kickPlayer: async function (player) {
@@ -103,7 +100,7 @@
 
                 axios.get(this.apiURL + 'players/').then(response => {
                     // add individual animationbutton for each player
-                    console.log(response.data)
+                    //console.log(response.data)
                     this.players = response.data.map(player => {
                         return {
                             data: player,
