@@ -71,17 +71,15 @@
                 apiURL: 'http://localhost:8000/api/',
             }
         },
+        created: function () {
+            /*setInterval(() => {
+                this.updatez();
+            }, 500);
+            // ressource intensive 
+            */
+        },
         mounted() {
-            axios.get(this.apiURL +'players/').then(response => {
-                // add individual animationbutton for each player
-                console.log(response.data)
-                this.players = response.data.map(player => {
-                    return {
-                        data: player,
-                        kickBtnLoadingAnimation: false,
-                    }
-                });
-            });
+            this.updatez()
         },
         
         methods: {
@@ -97,7 +95,22 @@
                 await axios.delete(this.apiURL + 'players/' + player.data.ip +'/');
 
                 // and also get him to put the kicked player in mw2 prison
-                await axios.post(this.apiURL + 'prison', player);
+                await axios.post(this.apiURL + 'prison/', player);
+                //cleanup
+                this.players.splice(this.players.indexOf(player), 1);
+            },
+            updatez: function () {
+
+                axios.get(this.apiURL + 'players/').then(response => {
+                    // add individual animationbutton for each player
+                    console.log(response.data)
+                    this.players = response.data.map(player => {
+                        return {
+                            data: player,
+                            kickBtnLoadingAnimation: false,
+                        }
+                    });
+                });
             },
 
         }
