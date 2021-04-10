@@ -1,5 +1,5 @@
 #pragma once
-#include <SQLite.h>
+#include <sqlite.h>
 
 using namespace std;
 
@@ -13,6 +13,7 @@ private:
 	SQLite db;
 
 public:
+
 
 	void extract_partystate(MW2Packet pkg) {
 		unsigned char* payload = pkg.payload;

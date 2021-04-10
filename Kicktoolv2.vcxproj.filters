@@ -30,16 +30,16 @@
     <ClInclude Include="header\EndianPortable.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="header\Extractor.h">
+    <ClInclude Include="header\extractor.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="header\SQLite.h">
+    <ClInclude Include="header\sqlite.h">
       <Filter>header</Filter>
     </ClInclude>
     <ClInclude Include="header\sniffer.h">
       <Filter>header</Filter>
     </ClInclude>
-    <ClInclude Include="header\Player.h">
+    <ClInclude Include="header\player.h">
       <Filter>header</Filter>
     </ClInclude>
   </ItemGroup>

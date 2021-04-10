@@ -68,11 +68,11 @@
         data() {
             return {
                 prisoneers: [],
-                apiURL: 'http://localhost:8000/api/prison/',
+                apiURL: 'http://localhost:8000/api/',
             }
         },
         mounted() {
-            axios.get(this.apiURL).then(response => {
+            axios.get(this.apiURL +'prison/').then(response => {
                 
                 this.prisoneers = response.data.map(player => {
                     return {
@@ -85,16 +85,18 @@
         },
         methods: {
             unblockPrisoneer: async function (prisoneer) {
-                //start loading animation
+                // loading animation
                 prisoneer.kickBtnLoadingAnimation = true
-
-                // finish loading animation
                 await new Promise(resolve => setTimeout(resolve, 500))
-                prisoneer.kickBtnLoadingAnimation = false
-
+                
                 // get the node server to remove the player from 'session'
-                await axios.delete(this.apiURL + prisoneer.data.ip+'/');
-            }
+                await axios.delete(this.apiURL + 'prison/' +prisoneer.data.ip + '/');
+
+                // cleanup
+                prisoneer.kickBtnLoadingAnimation = false
+                this.prisoneers.splice(this.prisoneers.indexOf(prisoneer), 1);
+            },
+           
         }
     }
 </script>
