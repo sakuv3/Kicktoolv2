@@ -1,12 +1,11 @@
 #include <sniffer.h>
-#include <Extractor.h>
+#include <extractor.h>
 #include <EndianPortable.h>
 #include <iphlpapi.h>
 
 using namespace std;
 static string interfaceIPAddr;
 Extractor extractor;
-
 
 int __cdecl main(void)
 {

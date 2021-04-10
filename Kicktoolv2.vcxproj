@@ -154,9 +154,9 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="header\EndianPortable.h" />
-    <ClInclude Include="header\Extractor.h" />
-    <ClInclude Include="header\Player.h" />
-    <ClInclude Include="header\SQLite.h" />
+    <ClInclude Include="header\extractor.h" />
+    <ClInclude Include="header\player.h" />
+    <ClInclude Include="header\sqlite.h" />
     <ClInclude Include="header\sniffer.h" />
   </ItemGroup>
   <ItemGroup>

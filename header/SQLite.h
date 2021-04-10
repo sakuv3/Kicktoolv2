@@ -1,6 +1,6 @@
 #include <string>
 #include <iostream>
-#include <Player.h>
+#include <player.h>
 #include <winsqlite/winsqlite3.h>
 
 using namespace std;
