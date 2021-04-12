@@ -153,6 +153,7 @@
     <ClCompile Include="src\main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="header\clientSocket.h" />
     <ClInclude Include="header\EndianPortable.h" />
     <ClInclude Include="header\extractor.h" />
     <ClInclude Include="header\player.h" />

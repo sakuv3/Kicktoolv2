@@ -42,6 +42,9 @@
     <ClInclude Include="header\player.h">
       <Filter>header</Filter>
     </ClInclude>
+    <ClInclude Include="header\clientSocket.h">
+      <Filter>header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="website\package.json">

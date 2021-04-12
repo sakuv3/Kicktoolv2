@@ -1,5 +1,6 @@
 #pragma once
 #include <sqlite.h>
+#include <clientSocket.h>
 
 using namespace std;
 
@@ -7,19 +8,26 @@ class Extractor
 {
 
 private:
+	SQLite db;
 	string hostIP;
+	SOCKET ConnectSocket;
+	ClientSocket client;
 	vector<Player> players;
 	vector<Player> history;
-	SQLite db;
+
 
 public:
 
-
+	int initExtractor(PCSTR PORT) {
+		this->ConnectSocket = client.ConnectToBackend(PORT);
+		return this->ConnectSocket;
+	}
 	void extract_partystate(MW2Packet pkg) {
 		unsigned char* payload = pkg.payload;
+		int magic = 50;
 		int index = start_of_content(payload);
 		int tempindex = index, namelength = 0;
-		std::string hostip = pkg.srcIP;
+		string hostip = pkg.srcIP;
 
 		// if the saved hostIP doesnt match with the host ip from the new packet, we have a new host -> update player vector
 		if (hostIP.size() > 0 && !hostIP._Equal(hostip))
@@ -32,25 +40,25 @@ public:
 		else if (hostIP.size() == 0)
 			hostIP += hostip;
 
+		string name;
 		while (index < pkg.payloadlen)
 		{
 			namelength = get_namelength(index, payload);
 			tempindex = index;
-			char* name = new (char[namelength]);
-			memset(name, 0, namelength + 1);
-			memcpy(name, extract_name(index, namelength, payload), namelength);
-			
+			name.clear();
+			name += extract_name(index, namelength, payload);
+
 
 			index += namelength + 17;
-			std::string ip = extract_IP(index, payload);
+			string ip = extract_IP(index, payload);
 			if (not_in_party(ip, players) and ip.compare("0.0.0.0") != 0)
 			{
-				push_player(name, namelength, ip);
+				push_player(name, ip);
 			}
 
 			// search for next name in payload
-			int tempindex = index + 8; // plus ipv4 plus port(_q_q)
-			int magic = 50;
+			tempindex = index + 8; // plus ipv4 plus port(_q_q)
+
 
 			bool searching = true;
 			while (searching)
@@ -78,25 +86,38 @@ public:
 		print_players();
 	}
 
-	void push_player(char* name, int namelength, std::string ip)
+	void push_player(string name, string ip)
 	{
 		Player player;
+		string isHost;
 
-		// Insert Name
-		player.name = new(char[namelength]);
-		memset(player.name, 0, namelength+1);
-		memcpy(player.name, name, namelength);
+		//error handling start
+		if (name.size() > 31)
+			name.resize(31);
+		if (ip.size() > 15)
+			ip.resize(15);
 
-		// Insert IP
-		player.ip += ip;
+		name.push_back('\0');
+		ip.push_back('\0');
+		//error handling end
 
 		// Is it the host?
 		if (ip._Equal(hostIP))
-			player.host = true;
+			isHost += "1";
 		else
-			player.host = false;
+			isHost += "0";
 
+		memset(player.name, 0, sizeof(player.name));
+		memset(player.ip, 0, sizeof(player.ip));
+		memset(player.isHost, 0, sizeof(player.isHost));
 
+		memcpy(player.name, name.c_str(), name.size());
+		memcpy(player.ip, ip.c_str(), ip.size());
+		memcpy(player.isHost, isHost.c_str(), isHost.size());
+
+		players.push_back(player);
+		client.sendPlayer(player);
+		
 		/*fetch history db first
 		if (not_in_party(player.ip, history))
 		{ // only add players to history when not already in history
@@ -107,8 +128,6 @@ public:
 				history.erase(history.begin());
 		}
 		*/
-		players.push_back(player);
-		db.insertTable(player, "players");
 	}
 
 	void print_players()
@@ -116,7 +135,7 @@ public:
 		for (Player player : players)
 		{
 			std::cout << player.name << " : " << player.ip;
-			if (player.host)
+			if (player.isHost)
 				std::cout << " <-- (HOST)";
 			std::cout << std::endl;
 		}
@@ -157,7 +176,7 @@ public:
 		return namelength;
 	}
 
-	std::string extract_IP(int index, unsigned char* payload)
+	string extract_IP(int index, unsigned char* payload)
 	{
 		int ip[4], k = 0;
 		std::string hostIP;
@@ -175,23 +194,25 @@ public:
 		return hostIP;
 	}
 
-	char* extract_name(int index, int namelength, unsigned char* payload)
+	string extract_name(int index, int namelength, unsigned char* payload)
 	{
-		char* name = new(char[namelength]);
-		memset(name, 0, namelength);
+		string name;
 		for (int i = 0; i <= namelength; i++)
 		{
-			name[i] = payload[index++];
+			name += payload[index++];
 		}
 		return name;
 	}
 
 	// If new player is already in list, dont add
-	bool not_in_party(std::string ip, std::vector<Player> items)
+	bool not_in_party(string ip, std::vector<Player> items)
 	{
+		string playerip;
 		for (Player player : items)
 		{
-			if (player.ip._Equal(ip))
+			playerip.clear();
+			playerip = player.ip;
+			if (playerip._Equal(ip))
 				return false;
 		}
 		return true;

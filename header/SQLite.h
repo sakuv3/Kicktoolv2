@@ -101,7 +101,7 @@ public:
     int insertTable(Player player, std::string table) {
 
         string host = "0";
-        if (player.host)
+        if (player.isHost)
             host = "1";
 
         // Build a string using asprintf()

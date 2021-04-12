@@ -9,6 +9,8 @@ Extractor extractor;
 
 int __cdecl main(void)
 {
+    if (extractor.initExtractor("33333") == INVALID_SOCKET)
+        return 1;
 
     // IPv4 address of the interface we want to sniff
     interfaceIPAddr = get_localIP();
