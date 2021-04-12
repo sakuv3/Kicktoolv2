@@ -87,7 +87,7 @@ public:
 					tempindex++;
 			}
 		}
-		print_players();
+		//print_players();
 	}
 
 	void push_player(string name, string ip)
