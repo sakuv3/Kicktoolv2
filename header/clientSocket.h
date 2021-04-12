@@ -19,6 +19,7 @@ private:
     WSADATA wsaData;
     SOCKET ConnectSocket = INVALID_SOCKET;
     struct addrinfo* result = NULL, * ptr = NULL, hints;
+    
 
 public:
     SOCKET GetConnectSocket() {
@@ -42,7 +43,6 @@ public:
         iResult = getaddrinfo("localhost", PORT, &hints, &result);
         if (iResult != 0) {
             printf("getaddrinfo failed with error: %d\n", iResult);
-            WSACleanup();
             return INVALID_SOCKET;
         }
 
@@ -53,7 +53,6 @@ public:
             ConnectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol);
             if (ConnectSocket == INVALID_SOCKET) {
                 printf("socket failed with error: %ld\n", WSAGetLastError());
-                WSACleanup();
                 return INVALID_SOCKET;
             }
 
@@ -71,7 +70,6 @@ public:
 
         if (ConnectSocket == INVALID_SOCKET) {
             printf("Unable to connect to server!\n");
-            WSACleanup();
             return INVALID_SOCKET;
         }
         printf("Connected to server on port: %s\n", PORT);
@@ -83,7 +81,6 @@ public:
         if (iResult == SOCKET_ERROR) {
             printf("send failed with error: %d\n", WSAGetLastError());
             closesocket(ConnectSocket);
-            WSACleanup();
             return SOCKET_ERROR;
         }
         return iResult;

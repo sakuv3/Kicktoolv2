@@ -66,24 +66,28 @@ public:
         checkDBErrors();
         createTables();
         clearPlayers();
+        printf("initialized player-DB\n");
     }
 
     int createTables() {
         // Save SQL to create a table
+        rc = sqlite3_exec(db, "DROP TABLE IF EXISTS players", callback, 0, &zErrMsg);
+        checkDBErrors();
+
         players = "CREATE TABLE IF NOT EXISTS players ("  \
             "name TEXT NOT NULL," \
             "ip TEXT PRIMARY KEY NOT NULL," \
-            "host INT NOT NULL);";
+            "isHost TEXT);";
 
         history = "CREATE TABLE IF NOT EXISTS prison ("  \
             "name TEXT NOT NULL," \
             "ip TEXT PRIMARY KEY NOT NULL," \
-            "host INT NOT NULL);";
+            "isHost TEXT);";
 
         prison = "CREATE TABLE IF NOT EXISTS history ("  \
             "name TEXT NOT NULL," \
             "ip TEXT PRIMARY KEY NOT NULL," \
-            "host INT NOT NULL);";
+            "isHost TEXT);";
 
         // Run the SQL
         rc = sqlite3_exec(db, players.c_str(), callback, 0, &zErrMsg);
@@ -99,16 +103,11 @@ public:
     }
 
     int insertTable(Player player, std::string table) {
-
-        string host = "0";
-        if (player.isHost)
-            host = "1";
-
         // Build a string using asprintf()
-        string query = "INSERT INTO " + table + " ('name', 'ip', 'host') VALUES(";
+        string query = "INSERT INTO players ('name', 'ip', 'isHost') VALUES(";
         query += "'" + (string)player.name + "', ";
         query += "'" + (string)player.ip + "', ";
-        query += host.c_str();
+        query += "'" + (string)player.isHost +"' ";
         query += ");";
 
         const char* ex = query.c_str();

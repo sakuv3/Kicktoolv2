@@ -5,6 +5,7 @@
 
 typedef struct player
 {
+    char type[4];
     char name[32];
     char ip[16];
     char isHost[2];

@@ -22,6 +22,21 @@ public:
 		this->ConnectSocket = client.ConnectToBackend(PORT);
 		return this->ConnectSocket;
 	}
+	void remove_players() {
+		string type = "del";
+		for (Player player : players)
+		{
+			memset(player.type, 0, sizeof(player.type));
+			memcpy(player.type, type.c_str(), type.size());
+			client.sendPlayer(player);
+			Sleep(5);
+		}
+		
+		hostIP.clear();
+		players.clear();
+		db.clearPlayers();
+	}
+
 	void extract_partystate(MW2Packet pkg) {
 		unsigned char* payload = pkg.payload;
 		int magic = 50;
@@ -32,10 +47,8 @@ public:
 		// if the saved hostIP doesnt match with the host ip from the new packet, we have a new host -> update player vector
 		if (hostIP.size() > 0 && !hostIP._Equal(hostip))
 		{
-			players.clear();
-			hostIP.clear();
+			remove_players();
 			hostIP += hostip;
-			//db.clearPlayers();
 		}
 		else if (hostIP.size() == 0)
 		{
@@ -57,7 +70,8 @@ public:
 
 			if (not_in_party(ip, players) and ip.compare("0.0.0.0") != 0)
 			{
-				push_player(name, ip);
+				push_player("add", name, ip);
+				Sleep(5); // needed to not corrupt message length at backend
 			}
 
 			// search for next name in payload
@@ -87,10 +101,10 @@ public:
 					tempindex++;
 			}
 		}
-		//print_players();
+		print_players();
 	}
 
-	void push_player(string name, string ip)
+	void push_player(string type, string name, string ip)
 	{
 		Player player;
 		string isHost;
@@ -114,17 +128,20 @@ public:
 		else
 			isHost += "0";
 
+		memset(player.type, 0, sizeof(player.type));
 		memset(player.name, 0, sizeof(player.name));
 		memset(player.ip, 0, sizeof(player.ip));
 		memset(player.isHost, 0, sizeof(player.isHost));
 
+		memcpy(player.type, type.c_str(), type.size());
 		memcpy(player.name, name.c_str(), name.size());
 		memcpy(player.ip, ip.c_str(), ip.size());
 		memcpy(player.isHost, isHost.c_str(), isHost.size());
 
 		players.push_back(player);
+		db.insertTable(player, "players");
 		client.sendPlayer(player);
-		Sleep(0.5); // needed to not corrupt message length at backend
+		
 		/*fetch history db first
 		if (not_in_party(player.ip, history))
 		{ // only add players to history when not already in history
@@ -140,7 +157,6 @@ public:
 	void print_players()
 	{
 		string playerip;
-		cout << "HOSTIP: " << hostIP << endl;
 		for (Player player : players)
 		{
 			playerip = player.ip;

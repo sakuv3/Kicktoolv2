@@ -23,7 +23,7 @@
 
                                     <v-card-title>
                                         {{item.data.name}}
-                                        <v-chip class="mx-2" v-if="item.data.host" color="green" text-color="white">
+                                        <v-chip class="mx-2" v-if="item.data.isHost =='1'" color="green" text-color="white">
                                             Host
                                             <v-icon>
                                                 mdi-fire
@@ -59,23 +59,61 @@
 
 <script>
     import axios from 'axios'
+    import io from 'socket.io-client';
+    let socket = io('http://localhost:44444');
     export default {
         name: 'Session',
-        components: {
-
-        },
-
         data(){
             return{
                 players: [],
                 apiURL: 'http://localhost:8000/api/',
+                socketURL: 'http://localhost:44444',
             }
         },
+        mounted() {
+            axios.get(this.apiURL + 'players/').then(response => {
+                // add individual animationbutton for each player
+                console.log(response.data)
+                this.players = response.data.map(player => {
+                    if (player.isHost == '1')
+                        player.isHost = true;
+                    else
+                        player.isHost = false;
+                    return {
+                        data: player,
+                        kickBtnLoadingAnimation: false,
+                    }
+                });
+            });
+        },
         created: function () {
-            setInterval(() => {
+            socket.on('connect', () => {
+                console.log('Connected!');
+
+            });
+            socket.on("addPlayer", (player) => {
+                //console.log("ADDED");
+                //console.log(player);
+                if (player.isHost == '1')
+                    player.isHost = true;
+                else
+                    player.isHost = false;
+                var newPlayer = { data: player, kickBtnLoadingAnimation: false};
+                this.players.push(newPlayer);
+                console.log(newPlayer.data);
+            });
+            socket.on("delPlayer", (player) => {
+                //console.log("REMOVED");
+                //console.log(player);
+               // this.players = this.players.filter(data => data.ip != player.ip);
+                this.players.splice(this.players.indexOf(player), 1);
+            });
+            /*setInterval(() => {
                 this.updatez();
             }, 1000);
             // refresh every second
+            */
+
         },
         
         
@@ -93,7 +131,9 @@
 
                 // and also get him to put the kicked player in mw2 prison
                 await axios.post(this.apiURL + 'prison/', player);
+
                 //cleanup
+                //this.players = this.players.filter(data => data.ip != player.ip);
                 this.players.splice(this.players.indexOf(player), 1);
             },
             updatez: function () {

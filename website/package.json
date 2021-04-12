@@ -17,7 +17,10 @@
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "sqlite3": "^5.0.2",
-    "windosu": "^0.3.0"
+    "windosu": "^0.3.0",
+    "socket.io": "^4.0.1",
+    "socket.io-client": "^4.0.1",
+    "vue-socket.io": "^3.0.10"
   },
   "devDependencies": {
     "@mdi/js": "^5.9.55",
