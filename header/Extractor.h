@@ -34,23 +34,27 @@ public:
 		{
 			players.clear();
 			hostIP.clear();
-			db.clearPlayers();
 			hostIP += hostip;
+			//db.clearPlayers();
 		}
 		else if (hostIP.size() == 0)
+		{
 			hostIP += hostip;
+		}
 
-		string name;
+		string name,ip;
 		while (index < pkg.payloadlen)
 		{
-			namelength = get_namelength(index, payload);
-			tempindex = index;
 			name.clear();
+			ip.clear();
+			namelength = get_namelength(index, payload);
+
+			tempindex = index;
 			name += extract_name(index, namelength, payload);
 
-
 			index += namelength + 17;
-			string ip = extract_IP(index, payload);
+			ip = extract_IP(index, payload);
+
 			if (not_in_party(ip, players) and ip.compare("0.0.0.0") != 0)
 			{
 				push_player(name, ip);
@@ -93,12 +97,15 @@ public:
 
 		//error handling start
 		if (name.size() > 31)
+		{
 			name.resize(31);
+			name.push_back('\0');
+		}
 		if (ip.size() > 15)
+		{
 			ip.resize(15);
-
-		name.push_back('\0');
-		ip.push_back('\0');
+			ip.push_back('\0');
+		}
 		//error handling end
 
 		// Is it the host?
@@ -117,7 +124,7 @@ public:
 
 		players.push_back(player);
 		client.sendPlayer(player);
-		
+		Sleep(0.5); // needed to not corrupt message length at backend
 		/*fetch history db first
 		if (not_in_party(player.ip, history))
 		{ // only add players to history when not already in history
@@ -132,14 +139,17 @@ public:
 
 	void print_players()
 	{
+		string playerip;
+		cout << "HOSTIP: " << hostIP << endl;
 		for (Player player : players)
 		{
+			playerip = player.ip;
 			std::cout << player.name << " : " << player.ip;
-			if (player.isHost)
+			if (playerip._Equal(hostIP))
 				std::cout << " <-- (HOST)";
 			std::cout << std::endl;
 		}
-		std::cout << "###########" << players.size() << "Players ###########" << std::endl;
+		cout << "###########" << players.size() << "Players ###########\n" << endl;
 	}
 
 	int start_of_content(unsigned char* payload)
